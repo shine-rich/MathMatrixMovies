@@ -3,7 +3,8 @@ from googleapiclient.discovery import build
 import json
 from google.oauth2.credentials import Credentials
 import os
-from groq import Groq
+# from groq import Groq
+from openai import OpenAI
 from dotenv import load_dotenv
 import re
 load_dotenv()
@@ -53,8 +54,10 @@ def remove_text_within_stars(text):
 
 
 def llama3_call(math_problem, audience_type, language, voice_label):
-    client = Groq(
-        api_key=os.environ.get("GROQ_API_KEY"),
+    # client = Groq(
+    #     api_key=os.environ.get("GROQ_API_KEY"),
+    client = OpenAI(
+        api_key=os.environ.get("OPENAI_API_KEY"),  # This is the default and can be omitted
     )
 
     TITLE_PROMPT = f'''Provide a concise and trendy YouTube tutorial \
@@ -101,7 +104,8 @@ def llama3_call(math_problem, audience_type, language, voice_label):
                 "content": TITLE_PROMPT
             }
         ],
-        model="llama3-8b-8192",
+        # model="llama3-8b-8192",
+        model="gpt-4o",
     )
 
     description_generated = client.chat.completions.create(
@@ -111,7 +115,8 @@ def llama3_call(math_problem, audience_type, language, voice_label):
                 "content": DESCRIPTION_PROMPT
             }
         ],
-        model="llama3-8b-8192",
+        # model="llama3-8b-8192",
+        model="gpt-4o",
     )
 
     tags_generated = client.chat.completions.create(
@@ -121,7 +126,8 @@ def llama3_call(math_problem, audience_type, language, voice_label):
                 "content": TAG_PROMPT
             }
         ],
-        model="llama3-8b-8192",
+        # model="llama3-8b-8192",
+        model="gpt-4o",
     )
 
     yt_title_not_cleaned = title_generated.choices[0].message.content
