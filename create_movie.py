@@ -72,15 +72,13 @@ Do use voiceovers to narrate the video. The following is an example of how to do
 ```
 from manim import *
 from manim_voiceover import VoiceoverScene
-from manim_voiceover.services.azure import AzureService
+from manim_voiceover.services.gtts import GTTSService
 
-
-class AzureExample(VoiceoverScene):
+class GTTSExample(VoiceoverScene):
     def construct(self):
         self.set_speech_service(
-            AzureService(
-                voice="en-US-AriaNeural",
-                style="newscast-casual",
+            GTTSService(
+                lang="en",
                 global_speed=1.15
             )
         )
@@ -131,7 +129,7 @@ Take a deep breath and consider all the requirements carefully, then write the c
 
 
 TRANSLATION_PROMPT = """
-Ok. now translate the text to {language}, and replace the voice_label for azureservice with {voice_label}. Please write ALL the code in one go so that it can be extracted and run directly.
+Ok. now translate the text to {language}, and replace the voice_label for gttsservice with {voice_label}. Please write ALL the code in one go so that it can be extracted and run directly.
 """
 
 #       hindi_text = Text('नमस्ते', font='Lohit Devanagari')  # Replace 'Lohit Devanagari' with any available Hindi font
@@ -255,7 +253,8 @@ def create_math_matrix_movie(math_problem, audience_type, language="English", vo
         math_problem=math_problem, audience_type=audience_type, language=language, voice_label=voice_label)
 
     # Print the filled prompt to the console
-    model = genai.GenerativeModel('gemini-1.5-pro-latest')
+#    model = genai.GenerativeModel('gemini-1.5-pro-latest')
+    model = genai.GenerativeModel('gemini-1.5-flash')
     chat = model.start_chat(history=[])
 
     attempt_count = 0
